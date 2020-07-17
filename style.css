@@ -6,6 +6,15 @@
 body {
     background-color: rgb(33, 71, 177);
     font-family: sans-serif;
+    position: relative;
+}
+
+.disable-screen {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    z-index: 3;
+    visibility: hidden;
 }
 
 .container {
@@ -69,3 +78,4 @@ img.backside {
 .score div {
     padding: 60px 30px;
 }
+

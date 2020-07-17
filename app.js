@@ -4,13 +4,12 @@ $(document).ready(() => {
     const imageArr = ['./img/angular.svg', './img/aurelia.svg', './img/backbone.svg', './img/ember.svg', './img/react.svg', './img/vue.svg'];
     const imageNodeList = $('.backside');
     const tiles = $('.tile');
-    const randomIndexArr = randomIndexArrayGenerator();
-
     const scoreLabel = $('#total-score');
-
     let score = 0;
 
+    /* ----------------------------------------------------------------- */
 
+    // Generate random array of length 12 and values from 1 to 6 and assign data-value attributes to the div's holding the images
 
     function randomIndexArrayGenerator() {
         const arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -26,20 +25,66 @@ $(document).ready(() => {
         return arr;
     }
 
+    const randomIndexArr = randomIndexArrayGenerator();
+
+    $.each(imageNodeList, (index, element) => {
+        $(element).attr('src', imageArr[randomIndexArr[index] - 1]);
+        $(element).parent().attr('data-value', randomIndexArr[index] - 1);
+    })
+
+    /* ----------------------------------------------------------------- */
+
+    // Function to get a key with a particular value
+
     function getKeyByValue(object, value) {
         return Object.keys(object).find(key => object[key] === value);
     }
 
+    /* ----------------------------------------------------------------- */
+
+    // Function to reveal and hide tiles
+
+    function flipTile(tileElement, revealOrHide) {
+        if (revealOrHide === 'reveal') {
+            return function () {
+                tileElement.addClass('tile-animation');
+                tileElement.on('transitionend webkitTransitionEnd oTransitionEnd', () => {
+                    tileElement.children().last().css('visibility', 'hidden');
+                    tileElement.children().first().css('visibility', 'visible');
+                    tileElement.removeClass('tile-animation');
+                });
+            }
+        } else {
+            return function () {
+                tileElement.addClass('tile-animation');
+                tileElement.on('transitionend webkitTransitionEnd oTransitionEnd', () => {
+                    tileElement.children().last().css('visibility', 'visible');
+                    tileElement.children().first().css('visibility', 'hidden');
+                    tileElement.removeClass('tile-animation');
+                });
+            }
+        }
+    }
+
+    /* ----------------------------------------------------------------- */
+
+    // Function to make tiles dissapear when matched
+
     function tileMatched(tileElement) {
         score++;
-        
         isACardFlipped = false;
         flippedID = "0";
         setTimeout(() => {
             $(`[data-value=${tileElement.attr('data-value')}]`).addClass('tile-remove');
             scoreLabel.html(score);
-        }, 1500)
+            $('.disable-screen').css('visibility', 'hidden');
+        }, 1200);
+
     }
+
+    /* ----------------------------------------------------------------- */
+
+    // Function to flip tiles over when not matched
 
     function tileNotMatched(tileElement) {
 
@@ -47,40 +92,21 @@ $(document).ready(() => {
         const prevElement = $(`#${flippedID}`);
 
         statusObj[prevElement.attr('data-value')] = false;
-
-
         setTimeout(() => {
 
-            currentElement.addClass('tile-animation');
-            currentElement.on('transitionend webkitTransitionEnd oTransitionEnd', () => {
-                currentElement.children().last().css('visibility', 'visible');
-                currentElement.children().first().css('visibility', 'hidden');
-                currentElement.removeClass('tile-animation');
-            });
+            (flipTile(currentElement, 'hide'))();
+            (flipTile(prevElement, 'hide'))();
+            $('.disable-screen').css('visibility', 'hidden');
 
-            prevElement.addClass('tile-animation');
-            prevElement.on('transitionend webkitTransitionEnd oTransitionEnd', () => {
-                prevElement.children().last().css('visibility', 'visible');
-                prevElement.children().first().css('visibility', 'hidden');
-                prevElement.removeClass('tile-animation');
-            });
-
-        }, 1500);
-
+        }, 1200);
         isACardFlipped = false;
         flippedID = "0";
 
     }
 
+    /* ----------------------------------------------------------------- */
 
-
-
-    $.each(imageNodeList, (index, element) => {
-        $(element).attr('src', imageArr[randomIndexArr[index] - 1]);
-        $(element).parent().attr('data-value', randomIndexArr[index] - 1);
-    })
-
-
+    // Create a status object to hold info regarding which tile was turned over
 
     const statusObj = {
         "1": false,
@@ -91,43 +117,37 @@ $(document).ready(() => {
         "6": false,
     }
 
+    // Store info whether a card is turned over and if it is, it's ID.
+
     let isACardFlipped = false;
     let flippedID = "0";
 
+    /* ----------------------------------------------------------------- */
 
-
-    // Adding event listeners to all tiles
+    // Add click event listeners to all tiles
 
     $.each(tiles, (index, tile) => {
         $(tile).click(() => {
 
-            // Adding tile flipping animation
+            (flipTile($(tile), 'reveal'))();
 
-            $(tile).addClass('tile-animation');
-            $(tile).on('transitionend webkitTransitionEnd oTransitionEnd', () => {
-                $(tile).children().last().css('visibility', 'hidden');
-                $(tile).children().first().css('visibility', 'visible');
-                $(tile).removeClass('tile-animation');
-            });
+            // Condition statement based on the whether any previous tile was flipped
 
-
-            if (!isACardFlipped) {
+            if (!isACardFlipped) { // No previous tile was flipped
                 statusObj[$(tile).attr('data-value')] = true;
                 isACardFlipped = true;
                 flippedID = $(tile).attr('id');
             } else {
-                if (statusObj[$(tile).attr('data-value')]) {
+                if (statusObj[$(tile).attr('data-value')]) { // The previous tile flipped matches the current card that is flipped
+                    $('.disable-screen').css('visibility', 'visible'); // Enable screen to prevent clicking
                     tileMatched($(tile));
-                } else {
+                } else { // The previous tile flipped does not match the current card
+                    $('.disable-screen').css('visibility', 'visible'); // Enable screen to prevent clicking
                     tileNotMatched($(tile));
                 }
             }
 
         });
     });
-
-
-
-
-
+    /* ----------------------------------------------------------------- */
 })
