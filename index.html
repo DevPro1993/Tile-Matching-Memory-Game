@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300;1,400&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
     <title>Memory Game</title>
 </head>
@@ -11,6 +15,10 @@
 <body>
 
     <div class="disable-screen"></div>
+
+    <div class="title">
+        <h2>Tile Matching Memory Game</h2>
+    </div>
 
     <div class="container">
         <div class="card-grid">
@@ -29,9 +37,14 @@
         </div>
 
         <div class="score">
-            <div>Score</div>
-            <div id="total-score">0</div>
+            <div class="instructions">Flip the tiles in pairs to get a match.</div>
+            <br><br>
+            <div class="points">Score: <span id="total-score">0</span></div>
         </div>
+
+
+
+
     </div>
 
 
