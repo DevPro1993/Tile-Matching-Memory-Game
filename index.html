@@ -14,11 +14,17 @@
 
 <body>
 
+    <!-- Container to disable clicking in between -->
+    
     <div class="disable-screen"></div>
+
+    <!-- Title -->
 
     <div class="title">
         <h2>Tile Matching Memory Game</h2>
     </div>
+
+    <!-- Container for the tile grid -->
 
     <div class="container">
         <div class="card-grid">
@@ -36,17 +42,17 @@
             <div class="tile" id="12"><img class="backside" src=""><img class="js-badge" src="./img/js-badge.svg"></div>
         </div>
 
+        <!-- Container for the score -->
+
         <div class="score">
             <div class="instructions">Flip the tiles in pairs to get a match.</div>
             <br><br>
             <div class="points">Score: <span id="total-score">0</span></div>
         </div>
-
-
-
-
     </div>
 
+
+    <!-- jQuery and App.js imports -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="app.js"></script>

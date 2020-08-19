@@ -1,15 +1,15 @@
 $(document).ready(() => {
 
+    // Variable Declaration
 
+    // Array of image paths
     const imageArr = ['./img/angular.svg', './img/aurelia.svg', './img/backbone.svg', './img/ember.svg', './img/react.svg', './img/vue.svg'];
     const imageNodeList = $('.backside');
     const tiles = $('.tile');
     const scoreLabel = $('#total-score');
     let score = 0;
 
-    /* ----------------------------------------------------------------- */
-
-    // Generate random array of length 12 and values from 1 to 6 and assign data-value attributes to the div's holding the images
+    // Function to generate random array of length 12 and values from 1 to 6 and assign data-value attributes to the div's holding the images
 
     function randomIndexArrayGenerator() {
         const arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -32,7 +32,6 @@ $(document).ready(() => {
         $(element).parent().attr('data-value', randomIndexArr[index] - 1);
     })
 
-    /* ----------------------------------------------------------------- */
 
     // Function to get a key with a particular value
 
@@ -40,7 +39,6 @@ $(document).ready(() => {
         return Object.keys(object).find(key => object[key] === value);
     }
 
-    /* ----------------------------------------------------------------- */
 
     // Function to reveal and hide tiles
 
@@ -66,8 +64,6 @@ $(document).ready(() => {
         }
     }
 
-    /* ----------------------------------------------------------------- */
-
     // Function to make tiles dissapear when matched
 
     function tileMatched(tileElement) {
@@ -81,8 +77,6 @@ $(document).ready(() => {
         }, 1200);
 
     }
-
-    /* ----------------------------------------------------------------- */
 
     // Function to flip tiles over when not matched
 
@@ -104,8 +98,6 @@ $(document).ready(() => {
 
     }
 
-    /* ----------------------------------------------------------------- */
-
     // Create a status object to hold info regarding which tile was turned over
 
     const statusObj = {
@@ -121,8 +113,6 @@ $(document).ready(() => {
 
     let isACardFlipped = false;
     let flippedID = "0";
-
-    /* ----------------------------------------------------------------- */
 
     // Add click event listeners to all tiles
 
@@ -149,8 +139,5 @@ $(document).ready(() => {
 
         });
     });
-    /* ----------------------------------------------------------------- */
 
-
-    console.log(localStorage)
 })
